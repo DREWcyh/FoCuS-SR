@@ -34,8 +34,21 @@ SKIP_CLIP="${SKIP_CLIP:-0}"
 DATA_SELECTION_DEVICE="${DATA_SELECTION_DEVICE:-cuda}"
 DATA_SELECTION_MAX_IMAGES="${DATA_SELECTION_MAX_IMAGES:-}"
 DATA_SELECTION_TARGET_COUNT="${DATA_SELECTION_TARGET_COUNT:-}"
-STAGE1_DEG_FILE_PATHS="${STAGE1_DEG_FILE_PATHS:-src/datasets/params_stage1_mild.yml,src/datasets/params_stage1_medium.yml,src/datasets/params_stage1_heavy.yml}"
-STAGE1_DEG_PRESET_PROBS="${STAGE1_DEG_PRESET_PROBS:-0.3,0.4,0.3}"
+STAGE1_PRESET_SET="${STAGE1_PRESET_SET:-5}"
+if [[ -z "${STAGE1_DEG_FILE_PATHS:-}" ]]; then
+  if [[ "${STAGE1_PRESET_SET}" == "3" ]]; then
+    STAGE1_DEG_FILE_PATHS="src/datasets/stage1_3preset/params_stage1_mild.yml,src/datasets/stage1_3preset/params_stage1_medium.yml,src/datasets/stage1_3preset/params_stage1_heavy.yml"
+    STAGE1_DEG_PRESET_PROBS="${STAGE1_DEG_PRESET_PROBS:-0.3,0.4,0.3}"
+  elif [[ "${STAGE1_PRESET_SET}" == "5" ]]; then
+    STAGE1_DEG_FILE_PATHS="src/datasets/stage1_5preset/params_stage1_clean_mild.yml,src/datasets/stage1_5preset/params_stage1_standard.yml,src/datasets/stage1_5preset/params_stage1_blur_aliasing.yml,src/datasets/stage1_5preset/params_stage1_noise_jpeg.yml,src/datasets/stage1_5preset/params_stage1_severe_mixed.yml"
+    STAGE1_DEG_PRESET_PROBS="${STAGE1_DEG_PRESET_PROBS:-0.20,0.25,0.20,0.20,0.15}"
+  else
+    echo "Unsupported STAGE1_PRESET_SET=${STAGE1_PRESET_SET}; use 3 or 5, or set STAGE1_DEG_FILE_PATHS manually." >&2
+    exit 1
+  fi
+else
+  STAGE1_DEG_PRESET_PROBS="${STAGE1_DEG_PRESET_PROBS:-}"
+fi
 
 MERGED_SEM_PROBE_DIR="${USER_MERGED_SEM_PROBE_DIR:-${PROBE_ROOT}/merged_unet_weight_semantic_probe_hq_b${PROBE_BATCHES}}"
 SAFE_TO_RISK_CURRICULUM_JSON="${USER_SAFE_TO_RISK_CURRICULUM_JSON:-${PROBE_ROOT}/safe_to_risk_rank_curriculum_merged_hq.json}"
@@ -53,6 +66,7 @@ echo "output: ${OUTPUT_ROOT}"
 echo "probe root: ${PROBE_ROOT}"
 echo "data curriculum dir: ${DATA_CURRICULUM_DIR}"
 echo "stage1: uniform pixel LoRA rank=${LORA_RANK_PIX}, broad degradation pair curriculum"
+echo "stage1 preset set: ${STAGE1_PRESET_SET}"
 echo "stage1 degradation presets: ${STAGE1_DEG_FILE_PATHS}"
 echo "stage1 degradation preset probs: ${STAGE1_DEG_PRESET_PROBS}"
 echo "stage2 split: conflict-only top30% -> Stage2b; no prune"
