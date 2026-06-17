@@ -21,7 +21,7 @@ wandb/
 events.out.tfevents*
 
 # Local datasets
-datasets/
+/datasets/
 
 # Large model weights and checkpoints
 *.ckpt
@@ -34,18 +34,16 @@ preset/models/*
 src/ram_pretrain_model/*
 !src/ram_pretrain_model/.gitkeep
 
-# Local data lists
-preset/gt_all_path.txt
-preset/gt_hq_path.txt
-preset/gt_lsdir_path.txt
-preset/gt_ffhq_path.txt
-
 # Local benchmark folders
 preset/testfolder/realsr/
 preset/testfolder/drealsr/
 preset/testfolder/div2k/
 preset/testfolder/test_SR_bicubic/
+!preset/testfolder/test_SR_bicubic/
+!preset/testfolder/test_SR_bicubic/.gitkeep
 preset/testfolder/test_HR/
+!preset/testfolder/test_HR/
+!preset/testfolder/test_HR/.gitkeep
 
 # System files
 .DS_Store

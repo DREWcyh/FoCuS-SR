@@ -26,7 +26,7 @@ If your machine needs a custom PyTorch/CUDA build, install PyTorch first from th
 
 ## Prepare Assets
 
-Large assets are not included in this repository. Prepare them locally with the following layout:
+Large assets are not tracked by Git. Prepare or copy them locally with the following layout:
 
 ```text
 preset/
@@ -47,6 +47,7 @@ preset/
 src/
   ram_pretrain_model/
     ram_swin_large_14m.pth
+    bert-base-uncased/
 ```
 
 ### Model Weights
@@ -84,6 +85,12 @@ Download the RAM checkpoint used by the prompt/tagging module:
 mkdir -p src/ram_pretrain_model
 wget -O src/ram_pretrain_model/ram_swin_large_14m.pth \
   https://huggingface.co/spaces/xinyu1205/recognize-anything/resolve/main/ram_swin_large_14m.pth
+```
+
+If BERT files are not downloaded automatically by your Transformers cache, place a local `bert-base-uncased` copy at:
+
+```text
+src/ram_pretrain_model/bert-base-uncased/
 ```
 
 For inference with a released FoCuS-SR checkpoint, place it at:
@@ -138,11 +145,11 @@ RUN_DATA_SELECTION=0 GPU=0 RUN_NAME=focus_sr_main bash scripts/train_focussr.sh
 
 ### Evaluation Benchmarks
 
-For RealSR evaluation, download the official RealSR benchmark from:
+Prepare the evaluation benchmarks with the following datasets:
 
-```text
-https://github.com/csjcai/RealSR
-```
+- RealSR: official RealSR benchmark.
+- DRealSR: official DRealSR benchmark.
+- DIV2K: the synthetic DIV2K validation set degraded with the Real-ESRGAN degradation pipeline, following the common StableSR/PiSA-SR evaluation setting.
 
 Place LR and HR test images as:
 
@@ -184,14 +191,6 @@ Run the full FoCuS-SR main pipeline:
 
 ```bash
 GPU=0 RUN_NAME=focus_sr_main bash scripts/train_focussr.sh
-```
-
-Useful smoke test:
-
-```bash
-GPU=0 PROBE_BATCHES=1 STAGE1_STEPS=1 STAGE2A_STEPS=1 STAGE2B_STEPS=1 \
-RUN_DATA_SELECTION=0 RUN_NAME=smoke \
-bash scripts/train_focussr.sh
 ```
 
 Important defaults:

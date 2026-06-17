@@ -1,0 +1,46 @@
+scale: 4
+color_jitter_prob: 0.1
+gray_prob: 0.05
+
+# the first degradation process
+resize_prob: [0.25, 0.70, 0.05]  # up, down, keep
+resize_range: [0.2, 1.6]
+gaussian_noise_prob: 0.5
+noise_range: [5, 30]
+poisson_scale_range: [0.5, 3.0]
+gray_noise_prob: 0.5
+jpeg_range: [35, 85]
+
+# the second degradation process
+second_blur_prob: 0.8
+resize_prob2: [0.3, 0.5, 0.2]  # up, down, keep
+resize_range2: [0.4, 1.4]
+gaussian_noise_prob2: 0.5
+noise_range2: [3, 25]
+poisson_scale_range2: [0.3, 2.0]
+gray_noise_prob2: 0.5
+jpeg_range2: [30, 95]
+
+brightness: [0.8, 1.2]
+contrast: [0.8, 1.2]
+saturation: [0.8, 1.2]
+hue: [-0.05, 0.05]
+
+kernel_info:
+    blur_kernel_size: 21
+    kernel_list: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
+    kernel_prob: [0.30, 0.30, 0.12, 0.08, 0.12, 0.08]
+    sinc_prob: 0.2
+    blur_sigma: [0.2, 4.0]
+    betag_range: [0.5, 5]
+    betap_range: [1, 3]
+
+    blur_kernel_size2: 21
+    kernel_list2: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
+    kernel_prob2: [0.30, 0.30, 0.12, 0.08, 0.12, 0.08]
+    sinc_prob2: 0.2
+    blur_sigma2: [0.2, 2.5]
+    betag_range2: [0.5, 5]
+    betap_range2: [1, 3]
+
+    final_sinc_prob: 0.9
